@@ -31,11 +31,6 @@ const Navbar = () => {
         return state.memberDataReducer;
     });
 
-    const memberData = useSelector((state)=>{
-        return state.memberDataReducer;
-    });
-    console.log(memberData);
-
     const memberNavigationLinks = [
         { text: 'Home', icon: <Home className={classes.getListItemIconStyles} />, url: '/' },
         { text: "Book your meal", icon: <RestaurantMenu className={classes.getListItemIconStyles} />, url: '/bookyourmeal' },
@@ -49,8 +44,8 @@ const Navbar = () => {
     ];
 
     const actionLinks = [
-        {text: 'Reset password', icon:<RestartAlt className={classes.getListItemIconStyles} />},
-        {text: 'Logout', icon:<Logout className={classes.getListItemIconStyles} />}
+        {text: 'Reset password', icon: <RestartAlt className={classes.getListItemIconStyles} />},
+        {text: 'Logout', icon: <Logout className={classes.getListItemIconStyles} />}
     ];
 
     const [anchorElNav, setAnchorElNav] = useState(null);

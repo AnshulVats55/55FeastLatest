@@ -28,8 +28,7 @@ const BookMeal = () => {
     const [prebookScroll, setPrebookScroll] = useState('paper');
     const [isBooked, setIsBooked] = useState(false);
     const [isBookingOpen, setIsBookingOpen] = useState(false);
-    // const [isDataLoaded, setIsDataLoaded] = useState(false);
-
+    
     const formattedDate = handleFormattedDate(new Date());
     const nextDate = getNextDate(new Date());
     const nextDateFormatted = handleFormattedDate(nextDate);
