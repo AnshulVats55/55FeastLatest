@@ -64,7 +64,7 @@ export const handleMemberBookingStatus = async (memberId) => {
 
 export const handleMemberCountByDate = async (date) => {
     try{
-        const response = await axios.get(`${BASE_URL}/bookmeal/date/count`, date, {
+        const response = await axios.post(`${BASE_URL}/bookmeal/date/count`, date, {
             headers: {
                 'Authorization': `Bearer ${MEMBER_TOKEN}`,
                 'Content-Type': 'application/json',

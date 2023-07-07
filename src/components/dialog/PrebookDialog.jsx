@@ -20,10 +20,22 @@ const PrebookDialog = ({ open, scroll, handleClose }) => {
     }, [open]);
 
     const [datePicked, setDatePicked] = useState("Seletced date appears here");
+    const [ragneStartDate, setRangeStartDate] = useState("Start date appears here");
+    const [rangeEndDate, setRangeEndDate] = useState("End date appears here");
 
     const handleDatePick = (event) => {
         console.log("Calendar event is this--------------------------->", event);
         setDatePicked(JSON.stringify(event).substring(0, 11));
+    };
+
+    const handleStartDatePicked = (event) => {
+        console.log("range start date event is this--------------------------->", event);
+        setRangeStartDate(JSON.stringify(event).substring(0, 11));
+    };
+
+    const handleEndDatePicked = (event) => {
+        console.log("range end date event is this--------------------------->", event);
+        setRangeEndDate(JSON.stringify(event).substring(0, 11));
     };
 
     const endDate = endOfWeek(new Date(), { weekStartsOn: 0 }); // Maximum Friday
@@ -58,33 +70,62 @@ const PrebookDialog = ({ open, scroll, handleClose }) => {
                         >
                             Pre-book your mouthwatering meals and enjoy a week full of culinary delights, conveniently delivered to your table
                         </Typography>
-                        <Grid container spacing={1} sx={{width:"100%", background:"pink"}}>
+                        <Grid container spacing={1} sx={{ width:"100%" }}>
                             <Grid item lg={6} md={6} sm={12} xs={12}>
-                                <Typography>Start Date</Typography>
+                                <Typography
+                                    sx={{
+                                        fontSize:"1rem",
+                                        marginTop:"1rem",
+                                    }}
+                                >
+                                    Start Date
+                                </Typography>
                                 <DesktopDatePicker
                                     className={classes.getDatePickerStyles}
                                     autoOk
-                                    onChange={(event)=>{handleDatePick(event)}}
+                                    onChange={(event)=>{handleStartDatePicked(event)}}
                                     timezone="default"
                                     disablePast="true"
                                     maxDate={endDate}
                                 />
+                                <Typography
+                                    sx={{
+                                        fontSize:"0.9rem",
+                                        marginTop:"1rem",
+                                    }}
+                                >
+                                    {ragneStartDate}
+                                </Typography>
                             </Grid>
                             <Grid item lg={6} md={6} sm={12} xs={12}>
-                            <Typography>End Date</Typography>
+                                <Typography
+                                    sx={{
+                                        fontSize:"1rem",
+                                        marginTop:"1rem",
+                                    }}
+                                >
+                                    End Date
+                                </Typography>
                                 <DesktopDatePicker
                                     className={classes.getDatePickerStyles}
                                     autoOk
-                                    onChange={(event)=>{handleDatePick(event)}}
+                                    onChange={(event)=>{handleEndDatePicked(event)}}
                                     timezone="default"
                                     disablePast="true"
                                     maxDate={endDate}
                                 />
+                                <Typography
+                                    sx={{
+                                        fontSize:"0.9rem",
+                                        marginTop:"1rem",
+                                    }}
+                                >
+                                    {rangeEndDate}
+                                </Typography>
                             </Grid>
                         </Grid>
-                        <Typography>{datePicked}</Typography>
                     </DialogContentText>
-            </DialogContent>
+                </DialogContent>
             <DialogActions
                 className={classes.getDialogActionStyles}
             >

@@ -70,7 +70,6 @@ const SignupForm = () => {
         reader.onload = function () {
           encodedFile = reader.result;
           setProfilePicture(encodedFile);
-        //   console.log("profile picture in encoded format is this -------------------->", encodedFile);
         };
         reader.onerror = function (error) {
           return error;
@@ -284,8 +283,8 @@ const SignupForm = () => {
                                     }}
                                 >
                                     <MenuItem value="" className={classes.getMenuItemStyles}>Select location</MenuItem>
-                                    <MenuItem value={"jaipur"} className={classes.getMenuItemStyles}>Jaipur</MenuItem>
-                                    <MenuItem value={"gurugram"} className={classes.getMenuItemStyles}>Gurugram</MenuItem>
+                                    <MenuItem value={"Jaipur"} className={classes.getMenuItemStyles}>Jaipur</MenuItem>
+                                    <MenuItem value={"Gurgaon"} className={classes.getMenuItemStyles}>Gurugram</MenuItem>
                                 </Select>
                             </FormControl>
                         </Stack>
@@ -325,8 +324,8 @@ const SignupForm = () => {
                                     }}
                                 >
                                     <MenuItem value="" className={classes.getMenuItemStyles}>Select gender</MenuItem>
-                                    <MenuItem value={"male"} className={classes.getMenuItemStyles}>Male</MenuItem>
-                                    <MenuItem value={"female"} className={classes.getMenuItemStyles}>Female</MenuItem>
+                                    <MenuItem value={"Male"} className={classes.getMenuItemStyles}>Male</MenuItem>
+                                    <MenuItem value={"Female"} className={classes.getMenuItemStyles}>Female</MenuItem>
                                 </Select>
                             </FormControl>
                         </Stack>

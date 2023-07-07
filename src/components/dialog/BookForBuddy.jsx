@@ -139,6 +139,8 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
                                 animationDuration={animationDuration}
                                 children="Book"
                                 isDataLoaded={isDataLoaded}
+                                isButtonRequired={true}
+                                isEmailChopRequired={true}
                                 handleAction={()=>{
                                     const response = handleBookForBuddy({ email: member.email, date: date });
                                     return response;
@@ -168,6 +170,8 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
                                     animationDuration={animationDuration}
                                     children="Book"
                                     isDataLoaded={isDataLoaded}
+                                    isButtonRequired={true}
+                                    isEmailChopRequired={true}
                                 />
                             </Skeleton>
                         );

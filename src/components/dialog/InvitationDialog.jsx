@@ -3,8 +3,9 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { getInvitationDialogStyles } from './InvitationDialog.Styles';
 import InviteMemberCard from '../card/InviteMemberCard';
 import { getNonInvitedMembers } from '../../api/invitationMethods/InvitationMethods';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { handleInviteMembers } from '../../invitationMethods/InvitationMethods';
+import { setTotalMembers } from '../../store/slices/TotalMembersSlice';
 
 const InvitationDialog = ({ open, scroll, handleClose }) => {
 
@@ -13,6 +14,7 @@ const InvitationDialog = ({ open, scroll, handleClose }) => {
     });
 
     const { classes } = getInvitationDialogStyles();
+    const dispatch = useDispatch();
     
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -36,6 +38,7 @@ const InvitationDialog = ({ open, scroll, handleClose }) => {
             if(response?.data?.status === "success"){
                 setNotInvited(response.data.data);
                 setIsDataLoaded(true);
+                dispatch(setTotalMembers(response.data.data.length));
             }
         };
 
@@ -135,6 +138,8 @@ const InvitationDialog = ({ open, scroll, handleClose }) => {
                                 animationDuration={animationDuration}
                                 children="Invite"
                                 isDataLoaded={isDataLoaded}
+                                isButtonRequired={true}
+                                isEmailChopRequired={true}
                                 handleAction={()=>{
                                         const response = handleInviteNewMember(member.email);
                                         return response;
@@ -164,6 +169,8 @@ const InvitationDialog = ({ open, scroll, handleClose }) => {
                                     animationDuration={animationDuration}
                                     children="Invite"
                                     isDataLoaded={isDataLoaded}
+                                    isEmailChopRequired={true}
+                                    isButtonRequired={true}
                                 />
                             </Skeleton>
                         );

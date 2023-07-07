@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography, Skeleton, Grid } from '@mui/material';
 import InviteButton from '../inviteButton/InviteButton';
 import { getInviteMemberCardStyles } from './InviteMemberCard.Styles';
@@ -7,7 +7,16 @@ import { useDispatch } from 'react-redux';
 import snackbarMessages from '../../Constants';
 import { setCustomSnackbar } from '../../store/slices/SnackbarSlice';
 
-const InviteMemberCard = ({ indexNumber, memberName, memberEmail, children, animationDuration, isDataLoaded , handleAction }) => {
+const InviteMemberCard = ({
+    indexNumber,
+    memberName,
+    memberEmail,
+    children,
+    animationDuration,
+    isDataLoaded ,
+    handleAction,
+    isDashboard
+}) => {
 
     const { classes } = getInviteMemberCardStyles();
 
@@ -87,7 +96,7 @@ const InviteMemberCard = ({ indexNumber, memberName, memberEmail, children, anim
         }
     };
 
-    handleMemberEmail();
+    { !isDashboard ? handleMemberEmail() : null };
     handleMemberName();
 
     return (
@@ -110,18 +119,39 @@ const InviteMemberCard = ({ indexNumber, memberName, memberEmail, children, anim
                         <Grid item lg={1} md={1} sm={1} xs={0} className={classes.getMemberNumberContStyles}>
                             <Typography className={classes.getMemberNumberStyles}>{indexNumber}</Typography>
                         </Grid>
-                        <Grid item lg={4} md={4} sm={4} xs={9} className={classes.getMemberNameContStyles} >
+                        <Grid item lg={4} md={4} sm={4} xs={isDashboard ? 5 : 9} className={classes.getMemberNameContStyles} >
                             <Typography className={classes.getMemberNameStyles}>{memberName}</Typography>
                         </Grid>
-                        <Grid item lg={5} md={5} sm={5} xs={0} className={classes.getMemberEmailContStyles}>
+                        <Grid item lg={5} md={5} sm={5} xs={isDashboard ? 7 : 0} className={classes.getMemberEmailContStyles}
+                            sx={{
+                                ...(!isDashboard
+                                    ?
+                                    {
+                                        "@media screen and (max-width: 599px)": {
+                                            display:"none",
+                                        },
+                                    }
+                                    :
+                                    {
+                                        "@media screen and (max-width: 599px)": {
+                                            display:"flex",
+                                        },
+                                        "@media screen and (max-width: 470px)": {
+                                            wordBreak: "break-all",
+                                        },
+                                    }
+                                )
+                            }}
+                        >
                             <Typography className={classes.getMemberEmailStyles}>{memberEmail}</Typography>
                         </Grid>
-                        <Grid item lg={2} md={2} sm={2} xs={3} className={classes.getInviteButtonContStyles}>
+                        <Grid item lg={2} md={2} sm={2} xs={isDashboard ? 0 : 3} className={classes.getInviteButtonContStyles}>
                             <InviteButton
                                 children={children}
                                 type=""
                                 handleAction={actionBeingPerformed}
                                 styles={{
+                                    display: isDashboard ? "none" : "flex",
                                     "@media screen and (max-width: 615px)": {
                                         fontSize:"0.8rem",
                                     },
@@ -147,7 +177,6 @@ const InviteMemberCard = ({ indexNumber, memberName, memberEmail, children, anim
                     }}
                 >
                     <Grid container>
-
                         <Skeleton animation="wave">
                             <Grid item lg={1} md={1} sm={1} xs={0} className={classes.getMemberAvatarContStyles}>
                                 <Skeleton animation="wave">
@@ -175,17 +204,25 @@ const InviteMemberCard = ({ indexNumber, memberName, memberEmail, children, anim
                         <Skeleton animation="wave">
                             <Grid item className={classes.getInviteButtonContStyles}>
                             <Skeleton animation="wave">
+                            {
+                                !isDashboard
+                                ?
                                 <InviteButton
                                     children={children}
                                     type=""
-                                    handleMemberInvitation={actionBeingPerformed}
+                                    handleAction={actionBeingPerformed}
                                     styles={{
-                                        "@media screen and (max-width: 532px)": {
-                                            fontSize:"0.8rem !important",
+                                        "@media screen and (max-width: 615px)": {
+                                            fontSize:"0.8rem",
+                                        },
+                                        "@media screen and (max-width: 370px)": {
                                             padding:"0.15rem 0rem",
                                         },
                                     }}
                                 />
+                                :
+                                null
+                            }
                             </Skeleton>
                             </Grid>
                         </Skeleton>

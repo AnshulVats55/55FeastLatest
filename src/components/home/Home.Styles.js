@@ -167,7 +167,7 @@ export const getHomePageStyles = makeStyles()((theme)=>({
 
     getSwiperContStyles: {
         width:"100%",
-        background:"whitesmoke",
+        background:"#f2f3f9",
         padding:"1rem 0rem",
         borderRadius:"10px",
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",

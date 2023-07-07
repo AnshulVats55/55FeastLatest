@@ -21,3 +21,21 @@ export const handleInviteMembers = async (memberEmail) => {
         return error;
     }
 };
+
+export const getTotalMembers = async (adminLocation) => {
+    try{
+        const response = await axios.get(`${BASE_URL}/user/all?location=${adminLocation}`, {
+            headers: {
+                'Authorization': `Bearer ${MEMBER_TOKEN}`,
+                'Content-Type': 'application/json',
+                referrerPolicy:'no-referrer',
+                mode:'no-mode',
+                "Access-Control-Allow-Origin":"*",
+            },
+        });
+        return response;
+    }
+    catch(error){
+        return error;
+    }
+};

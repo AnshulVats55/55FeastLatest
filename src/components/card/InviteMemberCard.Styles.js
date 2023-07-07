@@ -10,13 +10,12 @@ export const getInviteMemberCardStyles = makeStyles()((theme)=>({
         "&:hover": {
             boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
             transform: "scale(1.015)",
+            background:"#FFF",
         },
-        // background:"pink",
     },
 
     getGridContStyles: {
         width:"100%",
-        // background:"orange",
         padding:"0.6rem 0rem",
     },
 
@@ -25,7 +24,6 @@ export const getInviteMemberCardStyles = makeStyles()((theme)=>({
         display:"flex",
         justifyContent:"center",
         alignItems:"center",
-        // background:"green",
         "@media screen and (max-width: 599px)": {
             display:"none",
         },
@@ -40,7 +38,6 @@ export const getInviteMemberCardStyles = makeStyles()((theme)=>({
     },
 
     getMemberNameContStyles: {
-        // background:"red",
         display:"flex",
         justifyContent:"flex-start",
         alignItems:"center",
@@ -52,18 +49,17 @@ export const getInviteMemberCardStyles = makeStyles()((theme)=>({
         color: "#232229",
         marginLeft:"0.5rem",
         "@media screen and (max-width: 615px)": {
-            fontSize:"0.9rem",
+            fontSize:"0.8rem",
+        },
+        "@media screen and (max-width: 470px)": {
+            workBreak:"break-all",
         },
     },
 
     getMemberEmailContStyles: {
-        // background:"brown",
         display:"flex",
         justifyContent:"flex-start",
         alignItems:"center",
-        "@media screen and (max-width: 599px)": {
-            display:"none",
-        },
     },
 
     getMemberEmailStyles: {
@@ -74,10 +70,5 @@ export const getInviteMemberCardStyles = makeStyles()((theme)=>({
         "@media screen and (max-width: 615px)": {
             fontSize:"0.8rem",
         },
-    },
-
-    getInviteButtonContStyles: {
-        // background:"cyan",
-        // width:"15%",
     },
 }));

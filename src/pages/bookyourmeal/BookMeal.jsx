@@ -43,10 +43,10 @@ const BookMeal = () => {
         date: new Date().getHours() >= 15 && new Date().getHours() <= 23 ? nextDateFormatted : formattedDate,
     };
 
-    useEffect(()=>{
+    useEffect(()=>{//checks if meal is already booked for a member
         const getMemberBookingStatus = async () => {
             const response = await handleMemberBookingStatus(memberData._id);
-            console.log('Response of booking dates', response);
+            // console.log('Response of booking dates', response);
             const allBookingDates = response?.data?.data;
             if((allBookingDates.indexOf(formattedDate) > -1) || (allBookingDates.indexOf(nextDateFormatted) > -1)){
                 setIsBooked(true);
@@ -58,7 +58,7 @@ const BookMeal = () => {
         getMemberBookingStatus();
     }, [isBooked]);
 
-    const handleBookingNotifications = (notificationMessage) => {
+    const handleBookingNotifications = (notificationMessage) => {//dispatches notifications based on response
         dispatch(
             setCustomSnackbar({
               snackbarOpen: true,
@@ -68,7 +68,7 @@ const BookMeal = () => {
         );
     };
 
-    const checkMealBookingAvailability = () => {
+    const checkMealBookingAvailability = () => {//handles checking timings for meal bookings
         const currentDateTime = new Date();
         const currentDay = currentDateTime.getDay();
         const currentHour = currentDateTime.getHours();
@@ -80,7 +80,7 @@ const BookMeal = () => {
             }
             else{
                 setIsBookingOpen(false);
-                handleBookingNotifications("Sunday booking is closed !");
+                handleBookingNotifications("Bookings closed for today !");
                 return false;
             }
         }
@@ -95,7 +95,7 @@ const BookMeal = () => {
             }
             else{
                 setIsBookingOpen(false);
-                handleBookingNotifications("Mon-Thu bookings are closed !");
+                handleBookingNotifications("Bookings closed for today !");
                 return false;
             }
         }
@@ -107,13 +107,13 @@ const BookMeal = () => {
             else{
                 setIsBookingOpen(false);
                 console.log("");
-                handleBookingNotifications("Friday booking is closed !");
+                handleBookingNotifications("Bookings closed for today !");
                 return false;
             }
         }
         else {
             setIsBookingOpen(false);
-            handleBookingNotifications("Booking is not allowed !");
+            handleBookingNotifications("Bookings not allowed on weekend !");
             return false;
         }
     };
