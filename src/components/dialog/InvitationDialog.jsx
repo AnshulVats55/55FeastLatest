@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { handleInviteMembers } from '../../invitationMethods/InvitationMethods';
 import { setTotalMembers } from '../../store/slices/TotalMembersSlice';
 
-const InvitationDialog = ({ open, scroll, handleClose }) => {
+const InvitationDialog = ({ open, scroll, handleClose, children }) => {
 
     const adminData = useSelector((state)=>{
         return state.memberDataReducer;
@@ -136,10 +136,9 @@ const InvitationDialog = ({ open, scroll, handleClose }) => {
                                 memberName={member.fullName}
                                 memberEmail={member.email}
                                 animationDuration={animationDuration}
-                                children="Invite"
+                                children={children}
                                 isDataLoaded={isDataLoaded}
-                                isButtonRequired={true}
-                                isEmailChopRequired={true}
+                                isDashboard={false}
                                 handleAction={()=>{
                                         const response = handleInviteNewMember(member.email);
                                         return response;

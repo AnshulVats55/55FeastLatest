@@ -24,7 +24,7 @@ const InviteMemberCard = ({
     const actionBeingPerformed = async () => {
         try{
             const response = await handleAction();
-            console.log("Response at invite member card-------->", response);
+            console.log("Response at invite member card is this -------------->", response);
             if(response?.data?.status === "success"){
                 if(response?.data?.message === "Invited successfully"){
                     dispatch(
@@ -68,7 +68,6 @@ const InviteMemberCard = ({
             return response;
         }
         catch(error){
-            // console.log("inside catch");
             dispatch(
                 setCustomSnackbar({
                 snackbarOpen: true,

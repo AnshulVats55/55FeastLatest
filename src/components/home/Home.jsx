@@ -138,6 +138,7 @@ const Home = () => {
                                                 open={inviteOpen}
                                                 scroll={inviteScroll}
                                                 handleClose={handleInvitationClose}
+                                                children="Invite"
                                             />
                                             :
                                             <></>

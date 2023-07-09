@@ -7,55 +7,111 @@ import { handleFormattedDate, getNextDate } from '../../common/CommonData';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ProgressBar from '../../components/ProgressBar';
 import { useSelector } from 'react-redux';
-import { getTotalMembers } from '../../invitationMethods/InvitationMethods';
+import { getTotalMembers, handleDeleteMember, getReversedDate } from '../../invitationMethods/InvitationMethods';
 import CommonButton from '../../components/button/CommonButton';
 import WeeklyData from '../../components/weeklyDataChart/WeeklyData';
+import AddMemberDialog from '../../components/dialog/AddMemberDialog';
+import DeleteMemberDialog from '../../components/dialog/DeleteMemberDialog';
 const AdminDashboard = () => {
 
     const { location } = useSelector((state)=>{
         return state.memberDataReducer;
     });
-    console.log("location is this", location);
 
     const { classes } = getAdminDashboardStyles();
 
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [todaysCount, setTodaysCount] = useState([]);
+    const [todaysTotalCount, setTodaysTotalCount] = useState(0);
     const [totalMembers, setTotalMembers] = useState(0);
+    const [addMemberOpen, setAddMemberOpen] = useState(false);
+    const [addMemberScroll, setAddMemberScroll] = useState('paper');
+    const [deleteMemberOpen, setDeleteMemberOpen] = useState(false);
+    const [deleteMemberScroll, setDeleteMemberScroll] = useState('paper');
     let animationDuration = 0.4;
 
     const formattedDate = handleFormattedDate(new Date());
     const nextDate = getNextDate(new Date());
     const nextDateFormatted = handleFormattedDate(nextDate);
 
-    const dateToGetTodaysCount = {
+    const dateToGetTodaysCount = {//date to get todays count
         date: new Date().getHours() >= 11 && new Date().getHours() <= 23 ? nextDateFormatted : formattedDate
     };
 
-    // useEffect(()=>{
-    //     const getTodaysTotalCount = async () => {
-    //         const response = await handleMemberCountByDate(dateToGetTodaysCount);
-    //         // console.log("Response of today's count api----------------------->", response);
-    //         setTodaysCount(response?.data?.data);
-    //         setIsDataLoaded(true);
-    //     };
+    const handleReversedDate = (date) => {//reverses a date
+        const reversedDate = getReversedDate(date);
+        return reversedDate;
+    };
 
-    //     getTodaysTotalCount();
-        
-    // }, []);
+    const handleAddMemberOpen = (scrollType) => () => {//opens add member dialog
+        setAddMemberOpen(true);
+        setAddMemberScroll(scrollType);
+    };
 
-    useEffect(()=>{
-        const handleGetTotalMembers = async () => {
-            const response = await getTotalMembers(location);
-            console.log("Total members API response is this", response);
-            setTotalMembers(response?.data?.data?.length);
+    const handleAddMemberClose = () => {//closeds add member dialog
+        setAddMemberOpen(false);
+    };
+
+    const handleDeleteMemberOpen = (scrollType) => () => {//opens delete member dialog
+        setDeleteMemberOpen(true);
+        setDeleteMemberScroll(scrollType);
+    };
+
+    const handleDeleteMemberClose = () => {//closes delete member dialog
+        setDeleteMemberOpen(false);
+    };
+
+    const descriptionElementRef = React.useRef(null);
+    useEffect(() => {
+        if (open) {
+        const { current: descriptionElement } = descriptionElementRef;
+        if (descriptionElement !== null) {
+            descriptionElement.focus();
+        }
+        }
+    }, [open]);
+
+    useEffect(()=>{//get todaysCount according to date
+        const getTodaysTotalCount = async () => {
+            const response = await handleMemberCountByDate(dateToGetTodaysCount);
+            console.log("Response of today's count api----------------------->", response);
             setTodaysCount(response?.data?.data);
             setIsDataLoaded(true);
         };
 
+        getTodaysTotalCount();
+        
+    }, []);
+
+    useEffect(()=>{//get total members according to location
+        const handleGetTotalMembers = async () => {
+            const response = await getTotalMembers(location);
+            setTotalMembers(response?.data?.data?.length);
+        };
+
         handleGetTotalMembers();
     }, []);
+
+    useEffect(()=>{//gradually increases the value from 0 to todaysCount.length
+        const todaysCountPercentage = todaysCount?.length > 0 ? ((todaysCount?.length / totalMembers) * 100) : 0;
+
+        let currentValue = 0;
+        const increment = todaysCountPercentage / 100;
+        const interval = setInterval(() => {
+          currentValue += increment;
+          if(currentValue >= todaysCountPercentage){
+            currentValue = todaysCountPercentage;
+            clearInterval(interval);
+          }
+          setTodaysTotalCount(currentValue);
+        }, 10);
+
+        return () => {
+          clearInterval(interval);
+        };
+
+    }, [todaysCount, totalMembers]);
 
     const memberData = [//member's dummy data
         {
@@ -89,20 +145,12 @@ const AdminDashboard = () => {
     };
     const filteredUsers = todaysCount?.filter(member => member.fullName.toLowerCase().includes(searchTerm));
 
-    const handleExportInExcel = (excelFileLink) => {
+    const handleExportInExcel = (excelFileLink) => {//handles exporting member list in excel
         window.open(excelFileLink);
     };
 
-    const handleExportInPDF = (PdfFileLink) => {
-        window.open(PdfFileLink);
-    };
-
-    const handleAddNewMember = async () => {
-        console.log("add new member clicked !");
-    };
-
-    const handleDeleteExistingMember = async () => {
-        console.log("delete existing member clicked !");
+    const handleExportInPDF = (pdfFileLink) => {////handles exporting member list in PDF
+        window.open(pdfFileLink);
     };
 
     return (
@@ -114,10 +162,16 @@ const AdminDashboard = () => {
                     <Box className={classes.getBoxOneStyles}>
                         <Stack className={classes.getStackOneStyles}>
                             <Typography className={classes.getTextOneStyles}>
-                                {new Date().getHours() >= 15 && new Date().getHours() <= 23 ? `Count for ${nextDateFormatted}` : `Count for ${formattedDate}`}
+                                {
+                                    new Date().getHours() >= 15 && new Date().getHours() <= 23
+                                    ?
+                                    `Count for ${handleReversedDate(nextDateFormatted)}`
+                                    :
+                                    `Count for ${handleReversedDate(formattedDate)}`
+                                }
                             </Typography>
                             <Typography className={classes.getTextTwoStyles}>
-                                {`${todaysCount.length}`}
+                                {`${Math.round(todaysTotalCount)}`}
                             </Typography>
                         </Stack>
                         <ShowChartIcon className={classes.getIconOneStyles} />
@@ -137,12 +191,12 @@ const AdminDashboard = () => {
                     <Box className={classes.getBoxThreeStyles}>
                         <Stack>
                             <Typography className={classes.getTextThreeStyles}>
-                                Say goodbye to the hassel of making list of members
+                                Freeing up the time  by transitioning from manual list creation to automation
                             </Typography>
                             <Box className={classes.getDownloadButtonsContStyles}>
                                 <CommonButton
                                     children={"Export in Excel"}
-                                    type=""
+                                    type=""F
                                     onClick={()=>{
                                             handleExportInExcel('https://sample-videos.com/xls/Sample-Spreadsheet-10-rows.xls')
                                         }
@@ -205,59 +259,45 @@ const AdminDashboard = () => {
                     <Box className={classes.getBoxFourStyles}>
                     <Stack>
                             <Typography className={classes.getTextFourStyles}>
-                                Add new member or delete an existing member
+                                Now you can add & delete members in a speedy way without a fuss!
                             </Typography>
                             <Box className={classes.getDownloadButtonsContStyles}>
-                                <CommonButton
-                                    children={"Add Member"}
-                                    type=""
-                                    onClick={handleAddNewMember}
-                                    customStyles={{
-                                        width:"75% !important",
-                                        height:"40px",
-                                        borderRadius:"4px",
-                                        border:"1px solid #ef5d36",
-                                        color:"#ef5d36",
-                                        fontSize:"0.9rem",
-                                        margin:"0.25rem 0rem",
-                                        "&:hover": {
-                                            background:"#ef5d36",
-                                            border:"none",
-                                            color:"#FFF",
-                                        },
-                                        "&:focus": {
-                                            outline:"none",
-                                        },
-                                        "@media screen and (max-width: 399px)": {
-                                            fontSize:"0.8rem",
-                                        },
-                                    }}
-                                />
-                                <CommonButton
-                                    children={"Delete Member"}
-                                    type=""
-                                    onClick={handleDeleteExistingMember}
-                                    customStyles={{
-                                        width:"75% !important",
-                                        height:"40px",
-                                        borderRadius:"4px",
-                                        border:"1px solid #ef5d36",
-                                        color:"#ef5d36",
-                                        fontSize:"0.9rem",
-                                        margin:"0.25rem 0rem",
-                                        "&:hover": {
-                                            background:"#ef5d36",
-                                            border:"none",
-                                            color:"#FFF",
-                                        },
-                                        "&:focus": {
-                                            outline:"none",
-                                        },
-                                        "@media screen and (max-width: 399px)": {
-                                            fontSize:"0.8rem",
-                                        },
-                                    }}
-                                />
+                                <Button
+                                    className={classes.getAddMemberButtonStyles}
+                                    onClick={handleAddMemberOpen('paper')}
+                                >
+                                    Add member
+                                </Button>
+                                {
+                                    addMemberOpen
+                                    ?
+                                    <AddMemberDialog
+                                        open={addMemberOpen}
+                                        scroll={addMemberScroll}
+                                        handleClose={handleAddMemberClose}
+                                    />
+                                    :
+                                    <></>
+                                }
+                                <Button
+                                    className={classes.getAddMemberButtonStyles}
+                                    onClick={handleDeleteMemberOpen('paper')}
+                                >
+                                    Delete member
+                                </Button>
+                                {
+                                    deleteMemberOpen
+                                    ?
+                                    <DeleteMemberDialog
+                                        open={deleteMemberOpen}
+                                        scroll={deleteMemberScroll}
+                                        handleClose={handleDeleteMemberClose}
+                                        children="Delete"
+                                        placeholder="Search member to delete..."
+                                    />
+                                    :
+                                    <></>
+                                }
                             </Box>
                         </Stack>
                     </Box>
@@ -269,16 +309,18 @@ const AdminDashboard = () => {
                 <Grid item lg={12} md={12} sm={12} xs={12} className={classes.getGridItemTwoPointOneStyles}>
                     <TextField
                         type="search"
-                        placeholder="Search members..."
+                        placeholder="Search members for today's count..."
                         variant="outlined"
                         multiline
                         className={classes.root}
                         onChange={handleMemberSearch}
                     />
-                    <Stack className={classes.getStackStyles}>
-                        <Grid container item columnSpacing={1}>
+                    <Box className={classes.getStackStyles}>
+                        <Grid container sx={{ display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", background:"" }}>
                         {
                             isDataLoaded
+                            ?
+                            filteredUsers?.length > 0
                             ?
                             filteredUsers?.map((member, index)=>{
                                 return(
@@ -295,6 +337,16 @@ const AdminDashboard = () => {
                                     </Grid>
                                 );
                             })
+                            :
+                            <Typography className={classes.getErrorMessageOneStyles}>
+                                {
+                                    `No member has booked meal for ${new Date().getHours() >= 15 && new Date().getHours() <= 23
+                                    ?
+                                    handleReversedDate(nextDateFormatted)
+                                    :
+                                    handleReversedDate(formattedDate)}`
+                                }
+                            </Typography>
                             :
                             memberData?.map((member, index)=>{
                                 return(
@@ -315,7 +367,7 @@ const AdminDashboard = () => {
                             })
                         }
                         </Grid>
-                    </Stack>
+                    </Box>
                 </Grid>
 
                 <Grid item lg={12} md={12} sm={12} xs={12} className={classes.getGridItemTwoPointTwoStyles}>

@@ -78,12 +78,12 @@ const SignupForm = () => {
 
     const handleProfilePictureChange = (event) => {
     const profilePic = event.target.files;
-    if(profilePic && profilePic.length > 0){
-        getBase64(profilePic[0]);
-        setIsProfilePicAttached(true);
-        setOpen(true);
-        setScroll(scrollType);
-    }
+        if(profilePic && profilePic.length > 0){
+            getBase64(profilePic[0]);
+            setIsProfilePicAttached(true);
+            setOpen(true);
+            setScroll(scrollType);
+        }
     };
 
     const handleImageReselection = () => {

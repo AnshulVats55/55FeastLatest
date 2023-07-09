@@ -27,6 +27,10 @@ const PREBOOK_CANCELLATION_SUCCESSFULL = "Pre-booking cancelled successfully !";
 const PREBOOK_CANCELLATION_FAILURE = "Error cancelling pre-booking !";
 const MEMBER_INVITATION_SUCCESSFULL = "Invitation sent successfully !";
 const MEMBER_INVITATION_FAILURE = "Error sending invitation !";
+const MEMBER_ADDED_SUCCESSFULL = "Member added successfully !";
+const MEMBER_ADDED_FAILURE = "Error adding member !";
+const MEMBER_DELETE_SUCCESSFULL = "Member deleted successfully !";
+const MEMBER_DELETE_FAILURE = "Error deleting member !";
 
 export default {
   SUCCESS,
@@ -57,5 +61,9 @@ export default {
   PREBOOK_CANCELLATION_SUCCESSFULL,
   PREBOOK_CANCELLATION_FAILURE,
   MEMBER_INVITATION_SUCCESSFULL,
-  MEMBER_INVITATION_FAILURE
+  MEMBER_INVITATION_FAILURE,
+  MEMBER_ADDED_SUCCESSFULL,
+  MEMBER_ADDED_FAILURE,
+  MEMBER_DELETE_SUCCESSFULL,
+  MEMBER_DELETE_FAILURE
 };

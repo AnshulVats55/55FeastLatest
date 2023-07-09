@@ -1,27 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Skeleton } from '@mui/material';
-import { getBookForBuddyDialogStyles } from './BookForBuddy.Styles';
+import { getDeleteMemberDialogStyles } from './DeleteMemberDialog.Styles';
 import InviteMemberCard from '../card/InviteMemberCard';
-import { getMyBuddies, bookMealForBuddy } from '../../bookingMethods/BookingMethods';
-import { handleFormattedDate, getNextDate } from '../../common/CommonData';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTotalMembers, handleDeleteMember } from '../../invitationMethods/InvitationMethods';
 
-const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
+const DeleteMemberDialog = ({ open, scroll, handleClose, children, placeholder }) => {
 
-    const myData = useSelector((state)=>{
+    const { location } = useSelector((state)=>{
         return state.memberDataReducer;
     });
 
-    const { classes } = getBookForBuddyDialogStyles();
+    const { classes } = getDeleteMemberDialogStyles();
+
+    const dispatch = useDispatch();
     
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [myBuddies, setMyBuddies] = useState([]);
+    const [totalMembers, setTotalMembers] = useState([]);
     let animationDuration = 0.4;
-
-    const formattedDate = handleFormattedDate(new Date());
-    const nextDate = getNextDate(new Date());
-    const nextDateFormatted = handleFormattedDate(nextDate);
 
     const descriptionElementRef = useRef(null);
     useEffect(() => {
@@ -33,7 +30,16 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
         }
     }, [open]);
 
-    const date = new Date().getHours() >= 15 && new Date().getHours() <= 23 ? nextDateFormatted : formattedDate;
+    useEffect(()=>{
+        const handleGetTotalMembers = async () => {
+            const response = await getTotalMembers(location);
+            console.log("Total members API response is this", response);
+            setTotalMembers(response?.data?.data);
+            setIsDataLoaded(true);
+        };
+
+        handleGetTotalMembers();
+    }, []);
 
     const memberData = [//member's dummy data
         {
@@ -62,27 +68,13 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
         },
     ];
 
-    useEffect(()=>{
-        const handleMyBuddies = async () => {
-            const response = await getMyBuddies(myData.email);
-            console.log("Response of my buddies api is this ------------>", response);
-            if(response?.data?.status === "success"){
-                setMyBuddies(response?.data?.data);
-                setIsDataLoaded(true);
-            }
-        };
-
-        handleMyBuddies();
-    }, []);
-
     const handleMemberSearch = event => {//handles member search
         setSearchTerm(event.target.value.toLowerCase());
     };
-    const filteredUsers = myBuddies?.filter(member => member.fullName.toLowerCase().includes(searchTerm));
+    const filteredUsers = totalMembers?.filter(member => member.fullName.toLowerCase().includes(searchTerm));
 
-    const handleBookForBuddy = async (buddyData) => {
-        const response = await bookMealForBuddy(buddyData);
-        console.log(`Meal booked for my buddy ${buddyData.email}`, response);
+    const handleDeleteExistingMember = async (memberEmail) => {
+        const response = await handleDeleteMember(memberEmail);
         return response;
     };
 
@@ -100,7 +92,7 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
                     id="scroll-dialog-title"
                     className={classes.getDialogTitleStyles}
                 >
-                    Book for buddy
+                    Delete Members
                 </DialogTitle>
                 <DialogContent dividers={scroll === 'paper'} className={classes.getDialogContentStyles}>
                     <DialogContentText
@@ -112,17 +104,19 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
                         <Typography
                             sx={{
                                 fontSize:"1rem",
+                                "@media screen and (max-width: 532px)": {
+                                    fontSize:"0.9rem",
+                                },
                             }}
                         >
-                            Book a lunch count for your buddy and invite them to have lunch with you
+                            Deleting an existing member is an easy-peasy task you can do now with a click!
                         </Typography>
                         <TextField
                             type="search"
-                            placeholder="Search for your buddy..."
+                            placeholder={placeholder}
                             variant="outlined"
                             multiline
                             className={classes.root}
-                            inputProps={{ className: classes.input }}
                             onChange={handleMemberSearch}
                         />
                     {
@@ -130,21 +124,21 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
                     ?
                     filteredUsers?.length > 0
                     ?
-                    filteredUsers?.map((member, index)=>{
+                    filteredUsers.map((member, index)=>{
                         return(
                             <InviteMemberCard
                                 indexNumber={index+1}
                                 memberName={member.fullName}
                                 memberEmail={member.email}
                                 animationDuration={animationDuration}
-                                children="Book"
+                                children={children}
                                 isDataLoaded={isDataLoaded}
                                 isDashboard={false}
-                                handleAction={()=>{
-                                    const response = handleBookForBuddy({ email: member.email, date: date });
-                                    return response;
+                                handleAction={async () => {
+                                        const response = await handleDeleteExistingMember(member.email);
+                                        return response;
+                                    }
                                 }
-                            }
                             />
                         );
                     })
@@ -156,10 +150,10 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
                             fontFamily:"Poppins, sans-serif",
                         }}
                     >
-                        No buddy found with this name
+                        OOPS ! No member found...
                     </Typography>
                     :
-                    memberData?.map((member, index)=>{
+                    memberData.map((member, index)=>{
                         return(
                             <Skeleton animation="wave" sx={{ minWidth:"100% !important" }}>
                                 <InviteMemberCard
@@ -167,10 +161,9 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
                                     memberName={member.memberName}
                                     memberEmail={member.memberEmail}
                                     animationDuration={animationDuration}
-                                    children="Book"
+                                    children="Invite"
                                     isDataLoaded={isDataLoaded}
-                                    isButtonRequired={true}
-                                    isEmailChopRequired={true}
+                                    isDashboard={false}
                                 />
                             </Skeleton>
                         );
@@ -178,19 +171,19 @@ const BookForBuddyDialog = ({ open, scroll, handleClose }) => {
                     }
                     </DialogContentText>
                 </DialogContent>
-            <DialogActions
-                className={classes.getDialogActionStyles}
-            >
-                <Button
-                    onClick={handleClose}
-                    className={classes.getCloseButtonStyles}
+                <DialogActions
+                    className={classes.getDialogActionStyles}
                 >
-                    Close
-                </Button>
-            </DialogActions>
-        </Dialog>
+                    <Button
+                        onClick={handleClose}
+                        className={classes.getCloseButtonStyles}
+                    >
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
 
-export default BookForBuddyDialog;
+export default DeleteMemberDialog;

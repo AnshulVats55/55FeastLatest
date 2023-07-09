@@ -125,6 +125,7 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
         display:"flex",
         background:"#FFF",
         justifyContent:"center",
+        alignItems:"center",
         width:"90%",
         height:"75%",
         textAlign:"center",
@@ -143,6 +144,7 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
         display:"flex",
         background:"#FFF",
         justifyContent:"center",
+        alignItems:"center",
         width:"90%",
         height:"75%",
         textAlign:"center",
@@ -172,6 +174,7 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
         height:"100%",
         "@media screen and (max-width: 899px)": {
             background:"#f2f3f9",
+            marginBottom:"1rem",
         },
         "@media screen and (max-width: 599px)": {
             height:"95vh",
@@ -183,6 +186,7 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
         display:"flex",
         flexDirection:"column",
         justifyContent:"center",
+        alignItems:"center",
         "@media screen and (max-width: 599px)": {
             height:"50%",
         },
@@ -200,6 +204,11 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
     },
 
     getStackStyles: {
+        display:"flex",
+        flexDirection:"column",
+        justifyContent:"center",
+        alignItems:"center",
+        width:"100%",
         height:"100%",
         overflowX:"hidden",
         overflowY:"scroll",
@@ -216,6 +225,13 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
             borderRadius:"0.4rem",
             display:"none",
         },
+    },
+
+    getErrorMessageOneStyles: {
+        fontSize:"0.9rem",
+        fontFamily:theme.typography.fontFamily,
+        textAlign:"center !important",
+        color:"grey",
     },
 
     root: {
@@ -248,6 +264,32 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
     input: {
         "& .MuiInputBase-input": {
             color:"#232229 !important",
+        },
+    },
+
+    getAddMemberButtonStyles: {
+        width:"75% !important",
+        height:"40px",
+        borderRadius:"4px",
+        border:"1px solid #ef5d36",
+        color:"#ef5d36",
+        transition:"0.25s ease-in",
+        fontFamily: "Poppins, sans-serif",
+        fontSize:"0.9rem",
+        padding:"0.25rem 0.75rem",
+        textTransform:"capitalize",
+        textDecoration:"none",
+        margin:"0.25rem 0rem",
+        "&:hover": {
+            background:"#ef5d36",
+            border:"none",
+            color:"#FFF",
+        },
+        "&:focus": {
+            outline:"none",
+        },
+        "@media screen and (max-width: 399px)": {
+            fontSize:"0.8rem",
         },
     },
 }));

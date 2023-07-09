@@ -2,13 +2,12 @@ import { makeStyles } from "tss-react/mui";
 
 export const getCircularProgressStyles = makeStyles()((theme)=>({
     getLoaderContStyles: {
-        background:"#000",
-        width:"100%",
-        height:"100%",
+        background:"transparent",
+        minWidth:"100% !important",
+        minHeight:"100% !important",
         position:"absolute",
         top:"0",
         left:"0",
-        opacity:"0.8",
         zIndex:"1",
     },
 

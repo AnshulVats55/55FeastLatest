@@ -74,7 +74,7 @@ const BookMeal = () => {
         const currentHour = currentDateTime.getHours();
 
         if(currentDay === 0){
-            if(currentHour >= 19 && currentHour <= 23){//booking allowed from 5PM(Sunday) to 9AM(Monday)
+            if(currentHour >= 15 && currentHour <= 23){//booking allowed from 5PM(Sunday) to 9AM(Monday)
                 setIsBookingOpen(true);
                 return true;
             }
@@ -106,7 +106,6 @@ const BookMeal = () => {
             }
             else{
                 setIsBookingOpen(false);
-                console.log("");
                 handleBookingNotifications("Bookings closed for today !");
                 return false;
             }
@@ -190,7 +189,7 @@ const BookMeal = () => {
             <Grid item lg={4} md={4} sm={12} xs={12} className={classes.getGridItemStyles}>
                 <BookingCard
                     image={PrebookImage}
-                    heading="Wanna feel relaxed?"
+                    heading="Have Frictionless Meals"
                     caption="Pre-book your meal and enjoy your meal!"
                     actionName="Pre-Book your meal"
                     animationDuration={0.5}
@@ -212,7 +211,7 @@ const BookMeal = () => {
             <Grid item lg={4} md={4} sm={12} xs={12} className={classes.getGridItemStyles}>
                 <BookingCard
                     image={FriendImage}
-                    heading="Friend indeed"
+                    heading="Spirit of Companionship"
                     caption="Help your companions by booking their meal!"
                     actionName="Book for buddy"
                     animationDuration={0.6}
@@ -234,7 +233,7 @@ const BookMeal = () => {
             <Grid item lg={4} md={4} sm={12} xs={12} className={classes.getGridItemStyles}>
                 <BookingCard
                     image={SoloImage}
-                    heading="Automate the process"
+                    heading="Let’s Simplify Hunger"
                     caption="Reserve your lunch spot now without a fuss!"
                     actionName={isBooked ? "Cancel booking" : "Book your meal"}
                     animationDuration={0.7}
