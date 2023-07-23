@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, CircularProgress, LinearProgress } from '@mui/material';
+import { LinearProgress, Stack } from '@mui/material';
 import { getCircularProgressStyles } from './Loader.Styles';
 
 const Loader = () => {
@@ -7,9 +7,9 @@ const Loader = () => {
     const { classes } = getCircularProgressStyles();
 
     return (
-        <Box className={classes.getLoaderContStyles}>
+        <Stack className={classes.getLoaderContStyles} sx={{ color: '#ef5d36' }}>
             <LinearProgress color="inherit" className={classes.getLoaderStyles} />
-        </Box>
+        </Stack>
     );
 }
 

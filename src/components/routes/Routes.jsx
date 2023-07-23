@@ -9,8 +9,8 @@ import SignupForm from '../signupForm/SignupForm';
 import LoginForm from '../loginForm/LoginForm';
 import AdminDashboard from '../../pages/adminDashboard/AdminDashboard';
 import CustomSnackbar from '../snackbar/Snackbar';
-import BurgerImage from '../../assets/burger.png';
-import HotdogImage from '../../assets/hotdog.png';
+import CarrotImage from '../../assets/carrot.png';
+import FullPlateFood from '../../assets/full-plate.png';
 
 const AllRoutes = () => {
   return (
@@ -30,8 +30,8 @@ const AllRoutes = () => {
             :
             <>
                 <Routes>
-                    <Route exact path="/" element={<Authmodal image={BurgerImage} component={<LoginForm />} />} />
-                    <Route exact path="/signup" element={<Authmodal image={HotdogImage} component={<SignupForm />} />} />
+                    <Route exact path="/" element={<Authmodal image={CarrotImage} component={<LoginForm />} />} />
+                    <Route exact path="/signup" element={<Authmodal image={FullPlateFood} component={<SignupForm />} />} />
                 </Routes>
             </>
         }

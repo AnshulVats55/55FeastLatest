@@ -4,6 +4,7 @@ import { getDeleteMemberDialogStyles } from './DeleteMemberDialog.Styles';
 import InviteMemberCard from '../card/InviteMemberCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTotalMembers, handleDeleteMember } from '../../invitationMethods/InvitationMethods';
+import { motion } from 'framer-motion';
 
 const DeleteMemberDialog = ({ open, scroll, handleClose, children, placeholder }) => {
 
@@ -79,7 +80,7 @@ const DeleteMemberDialog = ({ open, scroll, handleClose, children, placeholder }
     };
 
     return (
-        <div style={{background:"brown !important"}}>
+        <div>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -150,7 +151,7 @@ const DeleteMemberDialog = ({ open, scroll, handleClose, children, placeholder }
                             fontFamily:"Poppins, sans-serif",
                         }}
                     >
-                        OOPS ! No member found...
+                        No member found...
                     </Typography>
                     :
                     memberData.map((member, index)=>{

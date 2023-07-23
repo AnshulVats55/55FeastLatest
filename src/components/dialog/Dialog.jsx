@@ -6,8 +6,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import ProfilePicNotFound from '../../assets/profile pic not found.jpg';
 import { Typography } from '@mui/material';
+import { getDialogStyles } from './Dialog.Styles';
 
-const CustomDialog = ({ open, scroll, handleClose, handleImageReselection, image }) => {
+const CustomDialog = ({ open, scroll, handleClose, image }) => {
+
+  const { classes } = getDialogStyles();
 
   return (
     <div>
@@ -23,20 +26,16 @@ const CustomDialog = ({ open, scroll, handleClose, handleImageReselection, image
             id="scroll-dialog-description"
             tabIndex={-1}
           >
-            {
-              image !== ""
-              ?
-              <>
-                <Typography variant="body1" textAlign={"center"}>Your profile picture</Typography>
-                <img src={image} alt="" width="100%" />
-              </>
-              :
-                <img src={ProfilePicNotFound} alt="" width="100%" />
-            }
+            <Typography variant="body1" textAlign={"center"}>Your profile picture</Typography>
+            <img src={image} alt="" width="100%" />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleImageReselection}>Re-select</Button>
+          <Button
+            className={classes.getActionButtonStyles}
+            onClick={handleClose}>
+              Close
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

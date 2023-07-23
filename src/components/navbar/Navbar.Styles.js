@@ -4,7 +4,7 @@ export const getNavbarStyles = makeStyles()((theme)=>({
     getAppbarStyles: {
         width:"100%",
         boxShadow:"none",
-        position:"absolute",
+        position:"fixed",
         top:"0px",
         left:"0px",
         background:"none",

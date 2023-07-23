@@ -1,3 +1,3 @@
-const BASE_URL = "https://five5feastbe.onrender.com";
+const BASE_URL = "https://five5feast.onrender.com";
 
 export default BASE_URL;

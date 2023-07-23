@@ -9,7 +9,7 @@ const CustomSnackbar = () => {
     const { classes } = getSnackbarStyles();
 
     const dispatch = useDispatch();
-    const{ snackbarOpen, snackbarType, snackbarMessage } = useSelector((state)=>state.snackbarReducer)
+    const{ snackbarOpen, snackbarType, snackbarMessage } = useSelector((state) => state.snackbarReducer)
     const handleClose = (reason) => {
         if(reason === "clickaway"){
             return;

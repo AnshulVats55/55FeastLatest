@@ -28,6 +28,47 @@ export const getPrebookDialogStyles = makeStyles()((theme)=>({
         fontSize: theme.typography.fontSize,
     },
 
+    getGridContStyles: {
+        width:"100%",
+        margin:"1rem 0rem 0rem",
+    },
+    
+    getGridItemStyles: {
+        // background:"pink",
+        display:"flex",
+        flexDirection:"column",
+        alignItems:"center",
+        justifyContent:"center",
+    },
+
+    root: {
+        "& .MuiInputBase-root": {
+            fontSize:"1rem",
+            background:"#F7F7F7",
+            '& fieldset': {
+                border:'none',
+            },
+            '&:hover fieldset': {
+                border: 'none',
+            },
+            "&.MuiInputBase-root.Mui-focused fieldset": {
+                border: '1px solid #ef5d36',
+            },
+        },
+        "& .MuiFormLabel-root": {
+            fontSize:"1rem",
+            "&.MuiFormLabel-root.Mui-focused": {
+                color: '#ef5d36',
+            },
+        },
+    },
+
+    input: {
+        "& .MuiInputBase-input": {
+            color:"#232229 !important",
+        },
+    },
+
     getDialogActionStyles: {
         // background:"wheat",
     },

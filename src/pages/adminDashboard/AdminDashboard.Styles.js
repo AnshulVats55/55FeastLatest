@@ -206,7 +206,6 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
     getStackStyles: {
         display:"flex",
         flexDirection:"column",
-        justifyContent:"center",
         alignItems:"center",
         width:"100%",
         height:"100%",
@@ -232,6 +231,7 @@ export const getAdminDashboardStyles = makeStyles()((theme)=>({
         fontFamily:theme.typography.fontFamily,
         textAlign:"center !important",
         color:"grey",
+        margin:"5rem auto 0rem",
     },
 
     root: {
